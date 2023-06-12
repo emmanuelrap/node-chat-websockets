@@ -31,4 +31,4 @@ wss.on("connection", function connection(ws) {
 // Levantamos servidor HTTP
 const port = process.env.PORT || 8080;
 server.listen(port);
-console.log("Servidor funcionando. Utiliza ws://localhost:8080 para conectar.")
+console.log("Servidor funcionando en: ",port)
