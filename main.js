@@ -1,8 +1,9 @@
 // Variables
-// Variables
-const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 const host = window.location.host;
 const url = `${protocol}://${host}/ws`; // Cambia "/ws" según tu configuración en el servidor
+
+console.log("Corriendo en:", url);
 
 const wss = new WebSocket(url);
 
@@ -18,7 +19,8 @@ const mensajes = document.querySelector("#mensajes");
 function handleClickButonEnviar() {
   let selectedColor = localStorage.getItem("colorSeleccionado");
   if (mensaje.value == "") {
-    wrapperNot.innerHTML = '<div class="alert alert-danger">Escribe un mensaje válido para enviar.</div>';
+    wrapperNot.innerHTML =
+      '<div class="alert alert-danger">Escribe un mensaje válido para enviar.</div>';
     return;
   }
 
@@ -45,7 +47,8 @@ function validarUsuario(evento) {
   if (usuario.value == "") {
     usuario.classList.remove("is-valid");
     usuario.classList.add("is-invalid");
-    wrapperNot.innerHTML = '<div class="alert alert-danger">Escribe tu nombre de usuario para chatear.</div>';
+    wrapperNot.innerHTML =
+      '<div class="alert alert-danger">Escribe tu nombre de usuario para chatear.</div>';
 
     // Bloquear el input
     mensaje.setAttribute("disabled", true);
@@ -70,7 +73,9 @@ usuario.addEventListener("keyup", validarUsuario);
  */
 function open() {
   // Abre conexión
-  const mensajesGuardados = JSON.parse(localStorage.getItem("mensajesGuardados"));
+  const mensajesGuardados = JSON.parse(
+    localStorage.getItem("mensajesGuardados")
+  );
   console.log("mensajesGuardados", mensajesGuardados);
   console.log("WebSocket abierto.");
 
@@ -140,11 +145,17 @@ function message(evento) {
   if (mensajesGuardados !== null) {
     mensajesGuardados.push(data);
     console.log("MensajesGuardados (Enviaste)", mensajesGuardados);
-    localStorage.setItem("mensajesGuardados", JSON.stringify(mensajesGuardados));
+    localStorage.setItem(
+      "mensajesGuardados",
+      JSON.stringify(mensajesGuardados)
+    );
   } else {
     mensajesGuardados = [data];
     console.log("MensajesGuardados (Enviaste)", mensajesGuardados);
-    localStorage.setItem("mensajesGuardados", JSON.stringify(mensajesGuardados));
+    localStorage.setItem(
+      "mensajesGuardados",
+      JSON.stringify(mensajesGuardados)
+    );
   }
 }
 
@@ -156,7 +167,7 @@ function error(evento) {
   console.error("WebSocket ha observado un error: ", evento);
 }
 
-wss.addEventListener("error", function(evento) {
+wss.addEventListener("error", function (evento) {
   console.error("WebSocket ha observado un error: ", evento);
 });
 
@@ -175,7 +186,8 @@ function enviarMensaje(evento) {
   // Evento tecla Enter
   if (evento.code === "Enter") {
     if (mensaje.value == "") {
-      wrapperNot.innerHTML = '<div class="alert alert-danger">Escribe un mensaje válido para enviar.</div>';
+      wrapperNot.innerHTML =
+        '<div class="alert alert-danger">Escribe un mensaje válido para enviar.</div>';
       return;
     }
 
@@ -192,10 +204,15 @@ function enviarMensaje(evento) {
 
     // Envía mensaje al WebSocket y LocalStorage
     wss.send(JSON.stringify(payload));
-    let mensajesGuardados = JSON.parse(localStorage.getItem("mensajesGuardados"));
+    let mensajesGuardados = JSON.parse(
+      localStorage.getItem("mensajesGuardados")
+    );
     mensajesGuardados.push(payload);
     console.log("MensajesGuardados (Te enviaron)", mensajesGuardados);
-    localStorage.setItem("mensajesGuardados", JSON.stringify(mensajesGuardados));
+    localStorage.setItem(
+      "mensajesGuardados",
+      JSON.stringify(mensajesGuardados)
+    );
 
     // Reiniciar nuestro input
     mensaje.value = "";
