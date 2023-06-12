@@ -1,34 +1,34 @@
-// Importamos las librerías requeridas
 const WebSocket = require("ws");
-const http      = require("http");
 
+// Función para manejar las conexiones WebSocket
+function handleWebSocketConnection() {
+  const wss = new WebSocket.Server({ noServer: true });
 
-// Creamos una instacia del servidor HTTP
-const server = http.createServer();
-
-// Creamos el servidor websocket con base al servidor http
-const wss    = new WebSocket.Server({ server });
-
-// Escuchamos los diferentes eventos
-wss.on("connection", function connection(ws) {
-  
-  // Escuchamos los mensajes entrantes
-  ws.on("message", function incoming(data) {
-
-    // Iteramos y envíamos a todos los clientes conectados la información recibida
-    wss.clients.forEach(function each(client) {
-      
-      if (client.readyState === WebSocket.OPEN) {
-        
-        // Enviamos la información recibida
-        client.send(data.toString());
-
-      }
+  wss.on("connection", function connection(ws) {
+    ws.on("message", function incoming(data) {
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(data.toString());
+        }
+      });
     });
   });
-});
 
-// Levantamos servidor HTTP
-const port = process.env.PORT || 8080;
-server.listen(port);
-console.log("Servidor funcionando en: ",port)
+  return wss;
+}
+
+module.exports = (req, res) => {
+  if (req.headers.upgrade && req.headers.upgrade.toLowerCase() === "websocket") {
+    const wss = handleWebSocketConnection();
+    wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onConnect);
+  } else {
+    // Aquí manejas la solicitud HTTP normal si es necesario
+    res.statusCode = 404;
+    res.end();
+  }
+};
+
+function onConnect(ws) {
+  const wss = handleWebSocketConnection();
+  wss.emit("connection", ws);
+}
