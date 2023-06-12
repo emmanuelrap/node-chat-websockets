@@ -1,9 +1,11 @@
 // Variables
-const protocol = "ws";
-const host = "localhost";
-const port = "8080";
-const url = `${protocol}://${host}:${port}`;
+// Variables
+const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+const host = window.location.host;
+const url = `${protocol}://${host}/ws`; // Cambia "/ws" según tu configuración en el servidor
+
 const wss = new WebSocket(url);
+
 const wrapperNot = document.querySelector("#notificaciones");
 const usuario = document.querySelector("#usuario");
 const mensaje = document.querySelector("#mensaje");
