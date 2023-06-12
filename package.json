@@ -1,4 +1,11 @@
 {
+  "name": "my-chat-app",
+  "version": "1.0.0",
+  "description": "My chat application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "ws": "^8.13.0"
   }
