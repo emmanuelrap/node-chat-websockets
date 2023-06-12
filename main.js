@@ -156,6 +156,10 @@ function error(evento) {
   console.error("WebSocket ha observado un error: ", evento);
 }
 
+wss.addEventListener("error", function(evento) {
+  console.error("WebSocket ha observado un error: ", evento);
+});
+
 // Se ejecuta al cerrarse una conexión
 function close() {
   console.log("WebSocket cerrado.");
