@@ -2,11 +2,14 @@
   "name": "my-chat-app",
   "version": "1.0.0",
   "description": "My chat application",
+  "main": "index.js",
   "scripts": {
-    "build": "node index.js",
-    "vercel-build": "node index.js"
+    "start": "node index.js",
+    "build": "webpack --mode production"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "webpack": "^5.50.0",
     "ws": "^8.13.0"
   }
 }
